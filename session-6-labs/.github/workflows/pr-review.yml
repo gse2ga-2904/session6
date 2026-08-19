@@ -1,0 +1,119 @@
+# pr-review.yml — run the embedded-reviewer agent on every PR and gate on blockers
+#
+# Course:  Agent Operations for Engineering Teams — Copilot edition
+# Used by: Session 5 · Lab 5.1 (automated code review for embedded PRs)
+# How to run: ships at the labs-repo root (.github/workflows/) — GitHub Actions
+#          only runs workflows at the repository root. Open a PR that touches
+#          a *.py file. The job runs the custom agent via Copilot CLI, validates
+#          the JSON findings, posts them as a PR comment, and FAILS the check if
+#          any finding has severity "blocker".
+#
+# Notes:
+# - Requires a Copilot license on the runner identity and the COPILOT_CLI_TOKEN
+#   secret (fine-grained token; never hard-code credentials).
+# - Copilot code review (the product feature) can ALSO be enabled as a repo rule;
+#   this workflow adds the team-tuned agent with a machine-readable gate on top.
+# - Reminder from the deck: agent suggestions are AI output too (~30% of generated
+#   snippets carry CWE weaknesses in studies) — this gate blocks, humans decide.
+
+name: embedded-pr-review
+
+on:
+  pull_request:
+    paths:
+      - "**/*.py"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  agent-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: List changed Python files
+        id: changed
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          git diff --name-only "$BASE" "$HEAD" -- '*.py' > changed_files.txt
+          echo "count=$(wc -l < changed_files.txt)" >> "$GITHUB_OUTPUT"
+          cat changed_files.txt
+
+      - name: Install Copilot CLI
+        if: steps.changed.outputs.count != '0'
+        # Package name as of Jul 2026 — verify against current docs before each
+        # delivery (@github/copilot vs the older @github/copilot-cli); see
+        # session-5/code/LIVE.md.
+        run: npm install -g @github/copilot
+
+      - name: Run embedded-reviewer agent
+        if: steps.changed.outputs.count != '0'
+        env:
+          # Fine-grained token with Copilot access — configure as a repo secret.
+          GITHUB_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+        run: |
+          # Ask the custom agent (defined in .github/agents/embedded-reviewer.agent.md)
+          # to review each changed file; concatenate the JSON arrays.
+          # NOTE: the `copilot --agent … --prompt … --allow-tool …` invocation
+          # below is ILLUSTRATIVE — verify the real Copilot CLI flags against
+          # LIVE.md / the current docs before wiring this into a live repo.
+          echo "[]" > findings.json
+          while IFS= read -r f; do
+            [ -f "$f" ] || continue
+            copilot --agent embedded-reviewer \
+                    --prompt "Review the file $f per your instructions. Output only the JSON array." \
+                    --allow-tool read --allow-tool search \
+                    > one.json || { echo "agent run failed for $f"; exit 1; }
+            jq -s '.[0] + .[1]' findings.json one.json > merged.json
+            mv merged.json findings.json
+          done < changed_files.txt
+          cat findings.json
+
+      - name: Validate findings schema
+        if: steps.changed.outputs.count != '0'
+        run: |
+          jq -e 'type == "array" and all(.[];
+                 (.severity | ascii_downcase | IN("blocker","major","minor"))
+                 and has("rule_id") and has("line") and has("suggestion"))' \
+             findings.json \
+          || { echo "::error::Reviewer output is not schema-valid JSON — tighten the agent's output contract."; exit 1; }
+
+      - name: Post findings as PR comment
+        if: steps.changed.outputs.count != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COUNT=$(jq 'length' findings.json)
+          {
+            echo "## embedded-reviewer — $COUNT finding(s)"
+            echo ""
+            echo "| Severity | Rule | Line | Suggestion |"
+            echo "|---|---|---|---|"
+            jq -r '.[] | "| \(.severity) | \(.rule_id) | \(.line) | \(.suggestion) |"' findings.json
+            echo ""
+            echo "_Automated review by a custom agent. Findings are advisory input to human review — verify each rule_id before acting._"
+          } > comment.md
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment.md
+
+      # This gate blocks on `blocker` only (unvalidated input/race). BAPS
+      # mandatory-rule findings are `major` and advisory ones `minor`, so — by
+      # design — they are REPORTED in the PR comment but do not fail the check
+      # (don't block a merge on style). The agent detects all three classes;
+      # the gate is deliberately narrow. Make the blocker set configurable (a
+      # repo var) if your BU wants standard-gating — see the Lab 5.1 stretch
+      # goal.
+      - name: Gate on blockers
+        if: steps.changed.outputs.count != '0'
+        run: |
+          BLOCKERS=$(jq '[.[] | select(.severity | ascii_downcase == "blocker")] | length' findings.json)
+          echo "blocker findings: $BLOCKERS"
+          if [ "$BLOCKERS" -gt 0 ]; then
+            echo "::error::$BLOCKERS blocker finding(s) — see the PR comment. A human may still override via review; this check only encodes the default."
+            exit 1
+          fi

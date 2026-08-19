@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session 6 · Governance, Compliance &amp; Measurement — Agent Operations (Copilot edition)</title>
+  <link rel="stylesheet" href="assets/reveal/dist/reveal.css">
+  <link rel="stylesheet" href="assets/reveal/plugin/highlight/monokai.css">
+  <link rel="stylesheet" href="assets/theme.css">
+  <link rel="stylesheet" href="assets/components.css">
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+
+    <!-- COVER -->
+    <section class="cover">
+      <div class="cover-inner">
+        <img class="cover-logo" src="assets/logo/tec-azul.png" alt="Tecnológico de Monterrey">
+        <div class="eyebrow">Tec de Monterrey × Bosch · Guadalajara · 2026</div>
+        <h1>Governance, Compliance &amp; Measurement</h1>
+        <div class="subtitle">Bootcamp: Agent Operations for Engineering Teams — <strong>Session 6 of 6</strong></div>
+        <div class="meta-row">
+          <div><b>5 hours</b>08:00 – 13:00</div>
+          <div><b>Six pillars</b>access · gates · isolation · standards · rollout · metrics</div>
+          <div><b>Outcome</b>a defensible operating posture</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BRIDGE -->
+    <!-- INSPIRA: Introduce · punch + backward link (Integra) -->
+    <section>
+      <span class="slide-kicker">Where we are</span>
+      <h2><span class="lead-rule"></span>From capability to governed capability</h2>
+      <div class="cols">
+        <div>
+          <p>Five weeks built power: workflows, production foundations, MCP, skills, real cases. Today we make it <strong>defensible</strong> — with Copilot's enterprise controls, stated honestly, gaps included.</p>
+          <div class="callout insight"><div class="callout-title">Six pillars — paired into four blocks (see the run of show)</div>The posture an auditor, a security office, and a safety sign-off stakeholder will actually accept.</div>
+        </div>
+        <div>
+          <div class="row" style="gap:.4em"><span class="pill">Tiered access</span><span class="pill">Human gates</span><span class="pill">Isolation</span><span class="pill">Standards</span><span class="pill">Rollout</span><span class="pill">Audit &amp; metrics</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WIIFM -->
+    <!-- INSPIRA: Introduce · WIIFM (saber / sentir / hacer) -->
+    <section>
+      <span class="slide-kicker">Why today is worth five hours</span>
+      <h2><span class="lead-rule"></span>What's in it for you</h2>
+      <div class="cols-3">
+        <div class="callout insight"><div class="callout-title">By 13:00 you'll know</div>The six pillars of a defensible agent posture — and, more valuable, every control's honest limitation before an auditor finds it.</div>
+        <div class="callout warning"><div class="callout-title">Why you'll care</div>A junior, via an agent, just read a restricted dataset. Samsung's engineers leaked source three times in twenty days. The quarter's AI-credit bill arrived and nobody saw it coming. Today is how none of those becomes your name in a finding.</div>
+        <div class="callout takeaway"><div class="callout-title">What you'll build — today</div>An access matrix for a real business unit, gates and isolation wired as hooks you already know how to write, and the cost dashboard your sponsor will actually read.</div>
+      </div>
+    </section>
+
+    <!-- COURSE MAP -->
+    <!-- INSPIRA: Introduce · panorámica -->
+    <section>
+      <span class="slide-kicker">The six-week route</span>
+      <h2><span class="lead-rule"></span>Where today fits</h2>
+      <div data-widget="course-map" data-current="6"></div>
+      <p class="muted" style="font-size:.66em;margin-top:.6em">Five stops built power: pipeline, instruments, reach, shared skills, real cases. Today wraps all of it in a posture an auditor accepts — and the capstone proves it as one system.</p>
+    </section>
+
+    <!-- RETA DEBRIEF (challenge from Session 5) -->
+    <!-- INSPIRA: Reta debrief + Integra · backward link -->
+    <section>
+      <span class="phase engage">Debrief</span>
+      <h3>What did the loops find in production code?</h3>
+      <div class="question">
+        <div class="q-label">Show &amp; tell · 2–3 voices</div>
+        <div class="q-text">Last week's challenge: run the review or coverage loop on your real 80% module. What's your delta — and did anything the loop found surprise your team?</div>
+      </div>
+    </section>
+
+    <!-- TODAY MAP -->
+    <!-- INSPIRA: Introduce · estructura -->
+    <section>
+      <span class="slide-kicker">Today · 08:00 – 13:00</span>
+      <h2><span class="lead-rule"></span>The six pillars</h2>
+      <table>
+        <tr><th>Block</th><th>Pillar</th></tr>
+        <tr><td>08:10</td><td>6.1 Tiered access &amp; policy management · 6.2 Mandatory human gates</td></tr>
+        <tr><td>09:40</td><td>6.2 gates (lab) · 6.3 Isolation patterns</td></tr>
+        <tr><td>11:10</td><td>6.3 isolation (lab) · 6.4 Standards &amp; assurances · 6.5 Rollout, sprawl &amp; identity</td></tr>
+        <tr><td>12:45</td><td>6.6 Audit, metrics &amp; cost (lab) · course close</td></tr>
+      </table>
+      <p class="muted" style="font-size:.66em;margin-top:.5em">☕ Breaks 09:00 – 09:10 · Coffee 10:30 – 11:00 · 12:00 – 12:10. The densest day — 6.4 &amp; 6.5 run lighter on labs; the 8-week rollout sketch and the exit quiz move async.</p>
+    </section>
+
+    <!-- ============ 6.1 ============ -->
+    <section class="divider">
+      <div class="num">6.1</div>
+      <span class="slide-kicker">Pillar 1 · Tiered access &amp; policy</span>
+      <h2><span class="lead-rule"></span>Who can reach what</h2>
+      <p style="font-size:.8em;opacity:.85">A two-axis policy: role × data classification — wired into Copilot's policy system.</p>
+    </section>
+
+    <!-- 6.1 ENGAGE -->
+    <section>
+      <span class="phase engage">Engage</span>
+      <h3>A junior, via an agent, just read a restricted dataset.</h3>
+      <div class="callout danger"><div class="callout-title">The agent inherits — and amplifies — access</div>Without a tiered policy, the agent's reach is the union of everything its user, its MCP servers, and its cloud environment can touch. That's a finding waiting to happen.</div>
+    </section>
+
+    <!-- 6.1 THEORY: two axes -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>Two axes, four data tiers</h3>
+      <div class="cols">
+        <div>
+          <div class="callout insight"><div class="callout-title">Data tiers</div>Public · Internal · Confidential · Restricted (safety-critical calibration, customer IP, credentials).</div>
+          <div class="callout insight"><div class="callout-title">Role tiers</div>Junior + agent · Senior · SRE/DevOps · Principal/architect — each row gets allow / gate / deny per data tier.</div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">Enforcement, not documentation</div>GitHub roles + repo permissions · Copilot policies · MCP allowlists · content exclusion. The matrix is only real where a control enforces each cell.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.1 THEORY: Copilot policy system -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>Copilot's policy system — the actual knobs</h3>
+      <div class="cols">
+        <div>
+          <ul class="tight">
+            <li><b>Three policy types:</b> Feature · Privacy · Models.</li>
+            <li><b>~17+ enumerated policies</b> — cloud agent, code review, MCP servers, web search, content exclusion, custom models…</li>
+            <li>Set at <b>enterprise</b> (locks orgs) or org level.</li>
+          </ul>
+        </div>
+        <div>
+          <div class="callout warning"><div class="callout-title">Conflict resolution is per-policy</div>Not a flat "most restrictive wins" rule — each policy resolves enterprise/org conflicts its own way. Verify the policy you care about; don't assume.</div>
+          <div class="callout insight"><div class="callout-title">Model restrictions</div>Admins can restrict the model picker by policy — e.g. only Anthropic GA models (zero-data-retention: the vendor stores no prompts or outputs) for regulated repos.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.1 THEORY: content exclusion -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>Content exclusion — and its real limitations</h3>
+      <div class="cols">
+        <div>
+          <div class="callout insight"><div class="callout-title">What it does</div>Business/Enterprise: YAML path rules (fnmatch) suppress Copilot suggestions in matched files — calibration data, key material, restricted IP.</div>
+        </div>
+        <div>
+          <div class="callout danger"><div class="callout-title">What it does NOT do</div>Not honored in <strong>Copilot CLI, the cloud coding agent, or Agent/Edit modes of Chat</strong> · up to <strong>30-min propagation</strong> · Copilot "may use semantic information from an excluded file if the information is provided by the IDE indirectly." <strong>Best-effort — not a guarantee.</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.1 INTERACTIVE + LAB -->
+    <section>
+      <span class="phase theory">Theory · interactive</span>
+      <h3>Design the matrix</h3>
+      <div data-widget="access-matrix"></div>
+    </section>
+
+    <!-- ============ 6.2 ============ -->
+    <section class="divider">
+      <div class="num">6.2</div>
+      <span class="slide-kicker">Pillar 2 · Mandatory human gates</span>
+      <h2><span class="lead-rule"></span>What an agent may never do alone</h2>
+      <p style="font-size:.8em;opacity:.85">Some actions require a human to say yes — every time.</p>
+    </section>
+
+    <!-- 6.2 ENGAGE -->
+    <section>
+      <span class="phase engage">Engage</span>
+      <h3>Samsung, 2023: engineers pasted source into a chatbot. Three leaks in twenty days.<a class="cite" href="https://www.forbes.com/sites/siladityaray/2023/05/02/samsung-bans-chatgpt-and-other-chatbots-for-employees-after-sensitive-code-leak/" target="_blank" rel="noopener">1</a></h3>
+      <div class="callout danger"><div class="callout-title">The lesson</div>Good intent isn't a control. Certain actions must hit a hard gate: destructive ops · credential creation/rotation · force-push to protected branches · threshold changes in safety-critical code · hardware bench access.</div>
+    </section>
+
+    <!-- 6.2 THEORY: implementation -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>Three enforcement layers in the Copilot stack</h3>
+      <div class="cols">
+        <div>
+          <div class="callout insight"><div class="callout-title">1 · PreToolUse hooks</div><code>.github/hooks/*.json</code> — a gate script on <code>preToolUse</code> exits non-zero to block. CLI: <strong>GA</strong> · VS Code: <strong>Preview</strong>. Commit to the default branch for cloud-agent runs to pick it up.</div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">2 · Permission levels</div>Default Approvals · Bypass Approvals · Autopilot (Preview). <strong>Never Autopilot in regulated repos.</strong></div>
+          <div class="callout insight"><div class="callout-title">3 · Platform guards</div>Protected branches + required reviews + protected environments bound the <em>cloud agent</em> — its draft PR cannot merge itself.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.2 INTERACTIVE -->
+    <section>
+      <span class="phase theory">Theory · interactive</span>
+      <h3>Gates are hooks you already know how to write</h3>
+      <div data-widget="hook-chain"></div>
+    </section>
+
+    <!-- 6.2 LAB -->
+    <section>
+      <span class="phase lab">Lab</span>
+      <div class="activity-card">
+        <div class="ac-head"><div class="ac-icon">▶</div><div class="ac-title">Implement the corporate gate set</div><div class="ac-time">solo</div></div>
+        <ul class="tight">
+          <li>Wire <code>gates.json</code>: destructive-op blocker · credential-file approval · safety-critical threshold gate.</li>
+          <li>Each as a <code>PreToolUse</code> hook; script does its own matching (matchers are not applied).</li>
+          <li>Prove it: attempt <code>rm -rf</code>, a <code>secrets/</code> edit, and a change to <code>safety/</code> — two blocked, one prompts.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 6.3 ============ -->
+    <section class="divider">
+      <div class="num">6.3</div>
+      <span class="slide-kicker">Pillar 3 · Isolation patterns</span>
+      <h2><span class="lead-rule"></span>Contain the blast radius</h2>
+      <p style="font-size:.8em;opacity:.85">Match the isolation level to the risk class.</p>
+    </section>
+
+    <!-- 6.3 THEORY: spectrum -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>The sandboxing spectrum</h3>
+      <div class="cols">
+        <div>
+          <ul class="tight">
+            <li><b>Shared-kernel container</b> — fastest (~500 ms class), weakest boundary.</li>
+            <li><b>gVisor</b> — user-space kernel (~100 ms class), stronger.</li>
+            <li><b>Firecracker / Kata microVM</b> — hardware isolation; the high-risk default.</li>
+          </ul>
+          <div class="callout danger"><div class="callout-title">2026 consensus</div><strong>Never run untrusted AI-generated code in shared-kernel containers.</strong></div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">Copilot's built-in boundary</div>The cloud agent runs in an <strong>ephemeral GitHub Actions sandbox</strong> — isolated per task, destroyed after. Complement it with read-only containers, a <strong>private VPC + egress proxy</strong> for self-hosted runners, and <strong>a worktree per agent</strong> (a separate git working copy per agent) for parallel local work.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.3 INTERACTIVE: decision tree -->
+    <section>
+      <span class="phase theory">Theory · interactive</span>
+      <h3>Which isolation level?</h3>
+      <div data-widget="decision-tree">
+        <script type="application/json">
+        {
+          "title": "Choose isolation by blast radius",
+          "tag": "decide · 6.3",
+          "root": {
+            "q": "What's the blast radius if this agent misbehaves?",
+            "options": [
+              { "label": "Low — read-only analysis", "next": { "result": { "title": "Read-only container", "why": "Constrained writable area only; nothing persistent to corrupt." } } },
+              { "label": "Medium — writes to a repo", "next": { "q": "Running parallel agents?",
+                "options": [
+                  { "label": "Yes", "next": { "result": { "title": "Worktree per agent", "why": "Isolated working copies — parallel work, no shared-state collisions. Delegated tasks get the cloud agent's ephemeral Actions sandbox." } } },
+                  { "label": "No", "next": { "result": { "title": "Read-only container + scoped write dir", "why": "Single agent, bounded write surface." } } }
+                ] } },
+              { "label": "High — prod / secrets / network", "next": { "result": { "title": "Ephemeral microVM", "why": "Firecracker/KVM in a private VPC with an egress proxy — destroyed after the task. Never a shared-kernel container." } } }
+            ]
+          }
+        }
+        </script>
+      </div>
+    </section>
+
+    <!-- COFFEE -->
+    <section class="divider">
+      <span class="slide-kicker">10:30</span>
+      <h2><span class="lead-rule"></span>☕ Coffee</h2>
+      <p style="font-size:.8em;opacity:.85">Back at 11:00. The worktree lab, then the auditor's language.</p>
+    </section>
+
+    <!-- 6.3 INTERACTIVE: worktree + lab -->
+    <section>
+      <span class="phase theory">Theory · animated</span>
+      <h3>Worktree isolation in action<a class="cite" href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">10</a></h3>
+      <div data-widget="worktree-parallel"></div>
+    </section>
+
+    <!-- ============ 6.4 ============ -->
+    <section class="divider">
+      <div class="num">6.4</div>
+      <span class="slide-kicker">Pillar 4 · Standards &amp; assurances</span>
+      <h2><span class="lead-rule"></span>Speak the auditor's language</h2>
+      <p style="font-size:.8em;opacity:.85">Map your posture to the frameworks they already trust — and know Copilot's paper trail.</p>
+    </section>
+
+    <!-- 6.4 FRAMEWORKS -->
+    <section>
+      <span class="phase theory">Engage → Theory</span>
+      <h3>“How does this map to NIST and ISO?” — be ready. <span class="asof">Facts as of Jul 2026</span></h3>
+      <div class="cols">
+        <div>
+          <div class="callout insight"><div class="callout-title">NIST AI RMF 1.0<a class="cite" href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">2</a> + GenAI Profile<a class="cite" href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf" target="_blank" rel="noopener">3</a></div>Govern · Map · Measure · Manage; the GenAI Profile (AI 600-1) adds 12 generative-risk areas.</div>
+          <div class="callout insight"><div class="callout-title">ISO/IEC 42001:2023</div>The AI management system standard — integrates with your ISO 27001 machinery.</div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">OWASP LLM Top 10 (2025)<a class="cite" href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener">4</a> + Agentic<a class="cite" href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">5</a></div>Prompt injection #1; agentic taxonomy (memory poisoning → rogue agents) — your threat checklist.</div>
+          <div class="callout warning"><div class="callout-title">EU AI Act — Aug 2026</div>Article 50 transparency obligations bind <strong>Aug 2 2026</strong>. The high-risk deferral (Digital Omnibus, to Dec 2027) is <em>proposed, not yet law</em>. Plus ISO 26262 + ASPICE (Automotive SPICE, the process-maturity framework) for automotive.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.4 COPILOT ASSURANCES -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>Copilot's enterprise assurances — the auditor one-pager <span class="asof">Facts as of Jul 2026</span></h3>
+      <table style="font-size:.62em">
+        <tr><th>Assurance</th><th>Status · condition</th></tr>
+        <tr><td>IP indemnity (Business/Enterprise)</td><td>Covers unmodified suggestions — <b>keep the public-code filter on Block</b></td></tr>
+        <tr><td>Data handling (B/E)</td><td>Prompts <b>not trained on</b>, encrypted in transit, <b>not stored at rest</b></td></tr>
+        <tr><td>Data residency (GHEC-DR)</td><td>US/EU <b>GA Apr 2026</b>; +10% AI-credit cost; off by default</td></tr>
+        <tr><td>Anthropic models</td><td>GA models under a <b>zero-data-retention</b> agreement</td></tr>
+        <tr><td>Certifications</td><td>SOC 2 Type II · ISO/IEC 27001 · GDPR/DPA</td></tr>
+        <tr><td>FedRAMP</td><td><b>In progress</b> — model infra authorized; Copilot service not yet</td></tr>
+      </table>
+    </section>
+
+    <!-- 6.4 SIGNIFICA -->
+    <!-- INSPIRA: Significa · powerful question -->
+    <section>
+      <span class="phase engage">Pause</span>
+      <h3>Which caveat would your auditor find first?</h3>
+      <div class="question">
+        <div class="q-label">Pairs</div>
+        <div class="q-text">Picture your org's last audit — the person, the style, the pet topics. Of everything on that assurances table, which condition or gap would <em>they</em> zero in on first, and what's your prepared answer?</div>
+      </div>
+    </section>
+
+    <!-- ============ 6.5 ============ -->
+    <section class="divider">
+      <div class="num">6.5</div>
+      <span class="slide-kicker">Pillar 5 · Progressive rollout</span>
+      <h2><span class="lead-rule"></span>Land it without a faceplant</h2>
+      <p style="font-size:.8em;opacity:.85">Canary, rolling, blue/green — plus the 2026 problems: sprawl and identity.</p>
+    </section>
+
+    <!-- 6.5 ENGAGE -->
+    <section>
+      <span class="phase engage">Engage</span>
+      <h3>The all-hands launch with an executive mandate — and no champions — failed.</h3>
+      <div class="callout danger"><div class="callout-title">Anti-pattern</div>Top-down mandates without ground support stall. Adoption is earned phase by phase, with visible champions and a rollback you can hit instantly.</div>
+    </section>
+
+    <!-- 6.5 INTERACTIVE -->
+    <section>
+      <span class="phase theory">Theory · interactive</span>
+      <h3>Advance — and roll back — by phase</h3>
+      <div data-widget="rollout-phases"></div>
+    </section>
+
+    <!-- 6.5 THEORY: sprawl & identity -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>2026 reality: agent sprawl &amp; agent identity<a class="cite" href="https://owasp.org/www-project-non-human-identities-top-10/" target="_blank" rel="noopener">11</a> <span class="asof">Facts as of Jul 2026</span></h3>
+      <div class="cols">
+        <div>
+          <div class="callout warning"><div class="callout-title">Sprawl</div>Gartner: the average Global 500 firm will run <strong>&gt;150,000 agents by 2028</strong><a class="cite" href="https://www.gartner.com/en/newsroom/press-releases/2026-04-28-gartner-identifies-six-steps-to-manage-artificial-intelligence-agent-sprawl" target="_blank" rel="noopener">6</a> (directional forecast — treat as a trend signal); <strong>&gt;40% of agentic projects canceled by end-2027</strong><a class="cite" href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027" target="_blank" rel="noopener">7</a>; only ~13% of orgs believe their agent governance is right.</div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">Identity</div>Agents need first-class identities — <strong>Microsoft Entra Agent ID</strong> (GA ~Apr 2026): agent identity blueprints, OAuth flows, Conditional Access. Every custom agent you shipped this course should be inventoried, owned, and revocable.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 6.6 ============ -->
+    <section class="divider">
+      <div class="num">6.6</div>
+      <span class="slide-kicker">Pillar 6 · Audit, metrics &amp; cost</span>
+      <h2><span class="lead-rule"></span>Prove it — and keep the bill honest</h2>
+      <p style="font-size:.8em;opacity:.85">GitHub's audit trail, its gap, the metrics API, and hard budgets.</p>
+    </section>
+
+    <!-- 6.6 ENGAGE -->
+    <section>
+      <span class="phase engage">Engage</span>
+      <h3>The quarter's AI-credit bill arrived. Nobody saw it coming.</h3>
+      <div class="callout danger"><div class="callout-title">No metrics, no mandate</div>Without spend attribution, override rates and agent-vs-human traceability, you can't defend the program — or renew its budget.</div>
+    </section>
+
+    <!-- 6.6 THEORY: audit + the gap -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>The audit trail — and the gap you must close</h3>
+      <div class="cols">
+        <div>
+          <div class="callout insight"><div class="callout-title">What GitHub logs</div>Audit log (<code>action:copilot</code>): plan, policy and seat changes, plus website agent activity. ~<strong>180-day</strong> retention.</div>
+        </div>
+        <div>
+          <div class="callout danger"><div class="callout-title">What it does NOT log</div><strong>Client-side prompts</strong> — what your engineers send from the IDE and CLI never reaches the audit log. Close the gap yourself: <strong>hooks → JSONL → SIEM</strong> (your security-event store). Your 6.2 gate set already emits the events.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.6 THEORY: metrics -->
+    <section>
+      <span class="phase theory">Theory</span>
+      <h3>What to measure <span class="asof">Facts as of Jul 2026</span></h3>
+      <div class="cols">
+        <div>
+          <div class="callout insight"><div class="callout-title">Sources</div><strong>Copilot usage metrics API</strong> — GA; NDJSON (newline-delimited JSON) reports, 1-day + 28-day, ~1-year retention (legacy Metrics API closed Apr 2026). Plus your hook traces.</div>
+          <div class="callout insight"><div class="callout-title">DORA + SPACE</div>The two standard delivery-metrics frameworks (DORA: DevOps Research &amp; Assessment<a class="cite" href="https://dora.dev/" target="_blank" rel="noopener">8</a>; SPACE: developer-productivity dimensions<a class="cite" href="https://queue.acm.org/detail.cfm?id=3454124" target="_blank" rel="noopener">9</a>). Deploy frequency, lead time, change-fail rate, MTTR — plus the human dimensions a single metric misses.</div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">Team-level agent signals</div>Credit spend per developer · % PRs with AI review · bugs caught pre-merge · override rate · agent-vs-human traceability (ISO 26262 evidence<a class="cite" href="https://www.iso.org/publication/PUB200262.html" target="_blank" rel="noopener">12</a>).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6.6 INTERACTIVE + LAB -->
+    <section>
+      <span class="phase theory">Theory · interactive</span>
+      <h3>The dashboard you'll build</h3>
+      <div data-widget="metrics-dashboard"></div>
+    </section>
+
+    <!-- COURSE CLOSE -->
+    <!-- INSPIRA: Integra · recap + validation (course-level) -->
+    <section>
+      <span class="slide-kicker">Course wrap-up</span>
+      <h2><span class="lead-rule"></span>Six weeks, one operating model — what you can now do</h2>
+      <div class="cols">
+        <div>
+          <ul class="tight">
+            <li>W1 Workflows · W2 Production foundations · W3 MCP &amp; extensibility</li>
+            <li>W4 Skills &amp; curation · W5 Engineering cases</li>
+            <li>W6 Governance — the posture that makes it defensible</li>
+          </ul>
+          <div class="question">
+            <div class="q-label">Exit quiz · 8 questions · async post-session form</div>
+            <div class="q-text">Name two surfaces where content exclusion is not honored — and the control you use instead.</div>
+            <div class="q-answer">Copilot CLI, the cloud coding agent, and Agent/Edit modes of Chat. Instead: repo access control + hooks + isolation — don't let Restricted data reach the agent at all.</div>
+          </div>
+        </div>
+        <div>
+          <div class="callout takeaway"><div class="callout-title">You can now operate agents like DevOps operates services</div>Governed, observable, auditable, cost-controlled — on Copilot's enterprise controls, with their limitations stated honestly and engineered around.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BETWEEN NOW AND THE CAPSTONE -->
+    <!-- INSPIRA: Reta (workplace challenge) + Acompaña (follow-up) -->
+    <section>
+      <span class="slide-kicker">Between now and the capstone</span>
+      <h2><span class="lead-rule"></span>Take it to your real org</h2>
+      <div class="cols">
+        <div>
+          <div class="bridge-card">
+            <div class="bc-head"><div class="bc-icon">→</div><div class="bc-title">This week's challenge</div><div class="bc-time">≤ 1 hour · your business unit</div></div>
+            <ul class="tight">
+              <li>Draft your team's <strong>one-page access matrix</strong> — real roles, real data tiers, the enforcing control per cell.</li>
+              <li>Reuse today's lab template and your Session 3 expose/never classification.</li>
+              <li><strong>Bring it to the capstone</strong> — it becomes the governance section of your project, pre-written.</li>
+            </ul>
+          </div>
+        </div>
+        <div>
+          <div class="callout insight"><div class="callout-title">Stuck — this week or after the course?</div>Email <strong>salvador.hinojosa@tec.mx</strong> — the matrix draft, the pillar that doesn't fit your org, the capstone scoping question. Q&amp;A stays open 30 days past the capstone. Async exit quiz link lands today.</div>
+          <div class="callout takeaway"><div class="callout-title">Why it's worth the hour</div>Of everything in this course, the access matrix is the artifact your security office will ask for first. Arriving at the capstone with it drafted turns the graded defense into a formality.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- END -->
+
+    <!-- ============ SOURCES / SUPPORTING LITERATURE ============ -->
+    <section class="sources">
+      <span class="slide-kicker">Supporting literature</span>
+      <h2><span class="lead-rule"></span>Sources &amp; further reading</h2>
+      <p class="muted" style="font-size:.62em;margin:.1em 0 .5em">Superscript markers on the slides link here — click any title to open the paper or primary source in a new tab.</p>
+      <ul class="src-list">
+          <li><span class="n">1.</span> <a href="https://www.forbes.com/sites/siladityaray/2023/05/02/samsung-bans-chatgpt-and-other-chatbots-for-employees-after-sensitive-code-leak/" target="_blank" rel="noopener">Samsung Bans ChatGPT After Sensitive Code Leak</a> <span class="src-src">— Forbes, 2023</span></li>
+          <li><span class="n">2.</span> <a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">AI Risk Management Framework (AI RMF 1.0)</a> <span class="src-src">— NIST, 2023</span></li>
+          <li><span class="n">3.</span> <a href="https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf" target="_blank" rel="noopener">AI RMF: Generative AI Profile (NIST AI 600-1)</a> <span class="src-src">— NIST, 2024</span></li>
+          <li><span class="n">4.</span> <a href="https://genai.owasp.org/llm-top-10/" target="_blank" rel="noopener">OWASP Top 10 for LLM Applications (2025)</a> <span class="src-src">— OWASP GenAI, 2025</span></li>
+          <li><span class="n">5.</span> <a href="https://genai.owasp.org/resource/owasp-top-10-for-agentic-applications-for-2026/" target="_blank" rel="noopener">OWASP Top 10 for Agentic Applications (2026)</a> <span class="src-src">— OWASP GenAI, 2025</span></li>
+          <li><span class="n">6.</span> <a href="https://www.gartner.com/en/newsroom/press-releases/2026-04-28-gartner-identifies-six-steps-to-manage-artificial-intelligence-agent-sprawl" target="_blank" rel="noopener">Gartner: Six Steps to Manage AI Agent Sprawl (>150,000 agents by 2028)</a> <span class="src-src">— Gartner, 2026</span></li>
+          <li><span class="n">7.</span> <a href="https://www.gartner.com/en/newsroom/press-releases/2025-06-25-gartner-predicts-over-40-percent-of-agentic-ai-projects-will-be-canceled-by-end-of-2027" target="_blank" rel="noopener">Gartner Predicts Over 40% of Agentic AI Projects Canceled by 2027</a> <span class="src-src">— Gartner, 2025</span></li>
+          <li><span class="n">8.</span> <a href="https://dora.dev/" target="_blank" rel="noopener">DORA — software delivery metrics (four keys)</a> <span class="src-src">— Google/DORA, 2024</span></li>
+          <li><span class="n">9.</span> <a href="https://queue.acm.org/detail.cfm?id=3454124" target="_blank" rel="noopener">The SPACE of Developer Productivity</a> <span class="src-src">— Forsgren et al., ACM Queue 2021</span></li>
+          <li><span class="n">10.</span> <a href="https://git-scm.com/docs/git-worktree" target="_blank" rel="noopener">git-worktree — manage multiple working trees</a> <span class="src-src">— Git project</span></li>
+          <li><span class="n">11.</span> <a href="https://owasp.org/www-project-non-human-identities-top-10/" target="_blank" rel="noopener">OWASP Non-Human Identities (NHI) Top 10</a> <span class="src-src">— OWASP, 2025</span></li>
+          <li><span class="n">12.</span> <a href="https://www.iso.org/publication/PUB200262.html" target="_blank" rel="noopener">ISO 26262 — Road vehicles: Functional safety</a> <span class="src-src">— ISO, 2018</span></li>
+      </ul>
+      <p class="src-note">Peer-reviewed / arXiv sources are used for empirical claims; official specifications, vendor docs and standards bodies for tooling and practice claims. Figures marked &ldquo;directional&rdquo; on the slides are order-of-magnitude estimates, not audited numbers.</p>
+    </section>
+
+    <section class="cover">
+      <div class="cover-inner">
+        <div class="eyebrow">End of the program</div>
+        <h1>Now build<br>the capstone.</h1>
+        <div class="subtitle">Bootcamp: Agent Operations for Engineering Teams · Tec de Monterrey × Bosch</div>
+        <div class="meta-row"><div><b>Capstone (W7, optional)</b>one agent · all six pillars · comparative defense</div><div><b>This week</b>draft your one-page access matrix</div><div><b>Thank you</b>salvador.hinojosa@tec.mx · open for 30 days</div></div>
+      <p class="survey-note">📝 Before you leave: answer the quality survey you received during the session — two minutes, and it directly shapes the program.</p>
+      </div>
+    </section>
+
+  </div>
+  <div class="footer">Agent Operations · <b>Session 6 — Governance, Compliance &amp; Measurement</b> · Tec de Monterrey × Bosch</div>
+</div>
+
+<script src="assets/reveal/dist/reveal.js"></script>
+<script src="assets/reveal/plugin/highlight/highlight.js"></script>
+<script src="assets/reveal/plugin/notes/notes.js"></script>
+<script src="assets/components.js"></script>
+<script>BoschSlides.init();</script>
+</body>
+</html>

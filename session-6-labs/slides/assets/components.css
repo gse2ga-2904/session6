@@ -1,0 +1,286 @@
+/* ============================================================================
+   REUSABLE COMPONENTS  ·  Agent Operations course
+   Two layers:
+     A) Static didactic blocks  (code cards, callouts, questions, badges, ...)
+     B) Interactive widget styling (behavior lives in components.js)
+   Class naming is generic so every session reuses them.
+   ========================================================================== */
+
+/* =========================================================
+   A) STATIC DIDACTIC BLOCKS
+   ========================================================= */
+
+/* ---- Andragogy phase badges (Engage / Theory / Activity / Lab) ---- */
+.phase {
+  display: inline-flex; align-items: center; gap: 0.5em;
+  font-size: 0.5em; font-weight: 800; letter-spacing: 0.06em;
+  text-transform: uppercase; color: #fff;
+  padding: 0.4em 0.9em; border-radius: 999px; margin-bottom: 0.5em;
+}
+.phase::before { content: ""; width: 0.7em; height: 0.7em; border-radius: 50%; background: rgba(255,255,255,0.85); }
+.phase.engage   { background: var(--c-hook); }
+.phase.theory   { background: var(--c-theory); }
+.phase.activity { background: var(--c-activity); }
+.phase.lab      { background: var(--c-lab); }
+
+/* ---- Code card (filename bar + body) ---- */
+.code-card {
+  background: var(--code-bg); border-radius: var(--radius);
+  box-shadow: var(--shadow); overflow: hidden; margin: 0.4em 0;
+}
+.code-card .code-bar {
+  display: flex; align-items: center; gap: 0.6em;
+  padding: 0.5em 0.9em; background: rgba(255,255,255,0.04);
+  border-bottom: 1px solid var(--code-line);
+}
+.code-card .dots { display: flex; gap: 6px; }
+.code-card .dots i { width: 11px; height: 11px; border-radius: 50%; display: inline-block; }
+.code-card .dots i:nth-child(1){ background:#ff5f57; } .code-card .dots i:nth-child(2){ background:#febc2e; } .code-card .dots i:nth-child(3){ background:#28c840; }
+.code-card .fname { color: #9fb3cc; font-family: var(--font-mono); font-size: 0.55em; letter-spacing: 0.02em; }
+.code-card .lang { margin-left: auto; color: #6f86a6; font-family: var(--font-mono); font-size: 0.5em; text-transform: uppercase; }
+.reveal .code-card pre { box-shadow: none; margin: 0; width: 100%; }
+.reveal .code-card pre code {
+  background: var(--code-bg); color: var(--code-fg);
+  font-family: var(--font-mono); font-size: 0.6em; line-height: 1.5;
+  padding: 0.9em 1.1em; border-radius: 0; max-height: none;
+}
+
+/* ---- Callouts (insight / warning / takeaway / danger) ---- */
+.callout {
+  position: relative; border-radius: var(--radius);
+  padding: 0.8em 1em 0.8em 1.2em; margin: 0.4em 0;
+  background: var(--tec-bg-alt); border-left: 6px solid var(--tec-blue);
+  font-size: 0.82em; line-height: 1.4;
+}
+.callout .callout-title { font-weight: 800; font-size: 0.8em; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 0.25em; color: var(--tec-blue); }
+.callout.insight  { border-left-color: var(--tec-blue);  }
+.callout.insight  .callout-title { color: var(--tec-blue); }
+.callout.takeaway { border-left-color: var(--c-activity); background: #EAF6EF; }
+.callout.takeaway .callout-title { color: var(--c-activity); }
+.callout.warning  { border-left-color: var(--c-warn); background: #FBF4E2; }
+.callout.warning  .callout-title { color: #8a6500; }
+.callout.danger   { border-left-color: var(--c-danger); background: #FBEAEA; }
+.callout.danger   .callout-title { color: var(--c-danger); }
+
+/* compact modifier — for dense slides that would otherwise overflow the
+   fixed 720px canvas. Apply to a <section> via class="compact". */
+.reveal section.compact h3 { margin-bottom: 0.3em; }
+.reveal section.compact .cols { gap: 0.9em; }
+.reveal section.compact .callout { font-size: 0.74em; padding: 0.6em 0.85em 0.6em 1em; margin: 0.3em 0; }
+.reveal section.compact .callout .callout-title { margin-bottom: 0.15em; }
+.reveal section.compact .tight li { margin-bottom: 0.1em; }
+
+/* ---- Question / poll block ---- */
+.question {
+  border: 2px dashed var(--tec-blue); border-radius: var(--radius);
+  padding: 0.9em 1.1em; background: var(--tec-blue-soft); margin: 0.4em 0;
+}
+.question .q-label { font-size: 0.5em; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--tec-blue); }
+.question .q-text { font-size: 0.95em; font-weight: 600; margin: 0.2em 0 0.4em; }
+.question .q-answer {
+  font-size: 0.8em; color: var(--tec-ink); border-top: 1px solid rgba(0,61,165,0.2);
+  margin-top: 0.5em; padding-top: 0.5em;
+}
+
+/* ---- Activity / "your turn" card ---- */
+.activity-card {
+  border-radius: var(--radius); background: #EAF6EF;
+  border: 1px solid #BfE6CF; box-shadow: var(--shadow);
+  padding: 1em 1.2em; margin: 0.3em 0;
+}
+.activity-card .ac-head { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.4em; }
+.activity-card .ac-icon { width: 1.6em; height: 1.6em; border-radius: 8px; background: var(--c-activity); color: #fff; display: grid; place-items: center; font-weight: 800; }
+.activity-card .ac-title { font-weight: 800; color: #166b44; font-size: 0.9em; }
+.activity-card .ac-time { margin-left: auto; font-size: 0.6em; color: var(--tec-muted); font-weight: 700; }
+.activity-card ul { font-size: 0.82em; }
+
+/* ---- Instructor note (speaker-facing, subtle) ---- */
+.instructor-note {
+  font-size: 0.62em; color: var(--tec-muted); border-left: 3px solid var(--tec-line);
+  padding: 0.2em 0 0.2em 0.8em; margin-top: 0.6em; font-style: italic;
+}
+.instructor-note b { color: var(--tec-blue); font-style: normal; }
+
+/* ---- Pills / chips ---- */
+.pill { display: inline-block; font-size: 0.55em; font-weight: 700; padding: 0.25em 0.7em; border-radius: 999px; background: var(--tec-blue-soft); color: var(--tec-blue); margin: 0 0.2em 0.2em 0; }
+.pill.ok   { background:#E4F4EB; color: var(--c-ok); }
+.pill.bad  { background:#FBEAEA; color: var(--c-danger); }
+.pill.warn { background:#FBF4E2; color:#8a6500; }
+
+/* ---- Fact-freshness stamp (visible date pin for volatile claims) ---- */
+.asof {
+  display: inline-block; font-size: 0.5em; font-weight: 700; padding: 0.22em 0.7em;
+  border-radius: 999px; border: 1px dashed var(--tec-line);
+  background: var(--tec-blue-soft); color: var(--tec-muted);
+  letter-spacing: 0.02em; vertical-align: middle; margin: 0 0 0.3em 0.4em;
+}
+.asof::before { content: "⏱ "; }
+
+/* =========================================================
+   B) INTERACTIVE WIDGETS  (markup built by components.js)
+   ========================================================= */
+
+.widget {
+  background: #fff; border: 1px solid var(--tec-line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 1em 1.1em; font-size: 0.7em;
+}
+.widget .w-head { display:flex; align-items:center; gap:0.6em; margin-bottom:0.7em; }
+.widget .w-title { font-weight:800; color: var(--tec-ink); font-size:1.05em; }
+.widget .w-tag { margin-left:auto; font-size:0.7em; color: var(--tec-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.05em; }
+.widget .btn {
+  font-family: var(--font-sans); font-size: 0.92em; font-weight: 700;
+  border: none; border-radius: 9px; padding: 0.5em 1em; cursor: pointer;
+  background: var(--tec-blue); color: #fff; transition: transform .08s ease, background .15s ease;
+}
+.widget .btn:hover { background: var(--tec-blue-bright); }
+.widget .btn:active { transform: translateY(1px); }
+.widget .btn.ghost { background: #fff; color: var(--tec-blue); border: 2px solid var(--tec-blue); }
+.widget .btn.ghost.sel { background: var(--tec-blue); color: #fff; }
+.widget .btn.sm { font-size: 0.78em; padding: 0.35em 0.7em; }
+.widget .row { display:flex; gap:0.6em; align-items:center; flex-wrap: wrap; }
+
+/* sliders */
+.widget .ctrl { margin: 0.5em 0; }
+.widget .ctrl label { display:flex; justify-content:space-between; font-weight:700; color: var(--tec-ink); font-size:0.9em; margin-bottom:0.15em; }
+.widget .ctrl label span { color: var(--tec-blue); }
+.widget input[type=range] { width: 100%; accent-color: var(--tec-blue); }
+
+/* ---- Model selector ---- */
+.model-rec { display:flex; align-items:center; gap:0.8em; margin:0.5em 0; padding:0.6em 0.8em; border-radius:10px; background: var(--tec-blue-soft); }
+.model-rec .rec-name { font-size:1.5em; font-weight:800; color: var(--tec-blue); }
+.model-rec .rec-why { font-size:0.85em; color: var(--tec-ink); }
+.cost-bars { display:grid; grid-template-columns: 70px 1fr 56px; gap:0.4em 0.6em; align-items:center; margin-top:0.4em; }
+.cost-bars .cb-name { font-weight:700; font-size:0.85em; }
+.cost-bars .cb-track { background:#eef2f8; border-radius:6px; height:18px; overflow:hidden; }
+.cost-bars .cb-fill { height:100%; border-radius:6px; transition: width .4s ease; }
+.cost-bars .cb-val { font-family: var(--font-mono); font-size:0.8em; text-align:right; color: var(--tec-muted); }
+
+/* ---- Agent patterns (SVG) ---- */
+.patterns .tabs { display:flex; flex-wrap:wrap; gap:0.4em; margin-bottom:0.6em; }
+.patterns svg { width:100%; height:230px; display:block; }
+.patterns .node { fill:#fff; stroke: var(--tec-blue); stroke-width:2.5; }
+.patterns .node.lit { fill: var(--tec-blue); }
+.patterns .node.eval { stroke: var(--c-activity); }
+.patterns .node.eval.lit { fill: var(--c-activity); }
+.patterns .nlabel { font-family: var(--font-sans); font-size:13px; font-weight:700; fill: var(--tec-ink); }
+.patterns .node.lit ~ .nlabel { fill:#fff; }
+.patterns .edge { stroke: var(--tec-line); stroke-width:2.5; fill:none; }
+.patterns .edge.lit { stroke: var(--tec-blue-bright); }
+.patterns .token { fill: var(--c-hook); }
+.patterns .desc { font-size:0.85em; color: var(--tec-ink); margin-top:0.4em; min-height:2.4em; }
+.patterns .desc b { color: var(--tec-blue); }
+
+/* ---- Hook lifecycle + chain ---- */
+.lifecycle .track { position:relative; }
+.stage {
+  border:2px solid var(--tec-line); border-radius:10px; padding:0.45em 0.6em;
+  background:#fff; text-align:center; transition: all .25s ease; font-size:0.82em;
+}
+.stage .s-name { font-weight:800; color: var(--tec-ink); }
+.stage .s-sub { font-size:0.78em; color: var(--tec-muted); }
+.stage.active { border-color: var(--tec-blue); box-shadow: 0 0 0 4px rgba(0,61,165,0.12); transform: translateY(-2px); }
+.stage.hook { border-style:dashed; border-color: var(--c-hook); }
+.stage.hook.active { box-shadow: 0 0 0 4px rgba(232,115,12,0.18); }
+.stage.pass { border-color: var(--c-ok); background:#EAF6EF; }
+.stage.block { border-color: var(--c-danger); background:#FBEAEA; }
+.flowline { height:3px; background: var(--tec-line); border-radius:2px; align-self:center; }
+.flowline.lit { background: var(--tec-blue-bright); }
+.verdict { font-weight:800; font-size:0.95em; margin-top:0.5em; min-height:1.4em; }
+.verdict.ok { color: var(--c-ok); } .verdict.bad { color: var(--c-danger); }
+
+/* ---- Worktree parallel ---- */
+.worktree .lane { display:grid; grid-template-columns: 120px 1fr; gap:0.6em; align-items:center; margin:0.35em 0; }
+.worktree .lane .name { font-family: var(--font-mono); font-size:0.78em; color: var(--tec-ink); font-weight:700; }
+.worktree .lane .bar { background:#eef2f8; border-radius:6px; height:20px; overflow:hidden; position:relative; }
+.worktree .lane .bar .fg { height:100%; width:0; background: linear-gradient(90deg, var(--tec-blue), var(--tec-blue-bright)); transition: width .1s linear; }
+.worktree .lane .bar .lbl { position:absolute; right:8px; top:1px; font-size:0.7em; color: var(--tec-muted); font-family: var(--font-mono); }
+.worktree .lane.done .bar .fg { background: linear-gradient(90deg, var(--c-ok), #34b06f); }
+
+/* ---- Output toggle / CI ---- */
+.ci-badge { display:inline-flex; align-items:center; gap:0.5em; font-weight:800; padding:0.4em 0.9em; border-radius:999px; font-size:0.9em; }
+.ci-badge.green { background:#E4F4EB; color: var(--c-ok); }
+.ci-badge.red   { background:#FBEAEA; color: var(--c-danger); }
+.ci-badge::before { content:""; width:0.8em; height:0.8em; border-radius:50%; background: currentColor; }
+
+/* ---- Course map (learning route · panorámica) ---- */
+.course-map { display: flex; align-items: flex-start; gap: 0; margin: 0.6em 0; }
+.course-map .cm-stop { flex: 1 1 0; text-align: center; position: relative; padding-top: 0.2em; }
+.course-map .cm-dot {
+  width: 1.7em; height: 1.7em; margin: 0 auto 0.35em; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 800; font-size: 0.75em;
+  background: #fff; border: 3px solid var(--tec-line); color: var(--tec-muted);
+}
+.course-map .cm-stop.done .cm-dot { background: var(--c-ok); border-color: var(--c-ok); color: #fff; }
+.course-map .cm-stop.here .cm-dot {
+  background: var(--tec-blue); border-color: var(--tec-blue); color: #fff;
+  box-shadow: 0 0 0 5px rgba(0,61,165,0.15);
+}
+.course-map .cm-name { font-size: 0.52em; font-weight: 800; color: var(--tec-ink); line-height: 1.15; }
+.course-map .cm-stop.next .cm-name { color: var(--tec-muted); font-weight: 700; }
+.course-map .cm-sub { font-size: 0.4em; color: var(--tec-muted); margin-top: 0.15em; line-height: 1.2; }
+.course-map .cm-you {
+  display: inline-block; margin-top: 0.3em; font-size: 0.38em; font-weight: 800;
+  letter-spacing: 0.08em; text-transform: uppercase; color: #fff;
+  background: var(--tec-blue); padding: 0.25em 0.8em; border-radius: 999px;
+}
+.course-map .cm-link { flex: 0 0 1.4em; height: 3px; background: var(--tec-line); border-radius: 2px; margin-top: 1.05em; }
+
+/* ---- Between-sessions card (workplace challenge + follow-up) ---- */
+.bridge-card {
+  border-radius: var(--radius); background: #FDF3E7;
+  border: 1px solid #F0D9B8; box-shadow: var(--shadow);
+  padding: 1em 1.2em; margin: 0.3em 0;
+}
+.bridge-card .bc-head { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.4em; }
+.bridge-card .bc-icon { width: 1.6em; height: 1.6em; border-radius: 8px; background: var(--c-hook); color: #fff; display: grid; place-items: center; font-weight: 800; }
+.bridge-card .bc-title { font-weight: 800; color: #9a5a08; font-size: 0.9em; }
+.bridge-card .bc-time { margin-left: auto; font-size: 0.6em; color: var(--tec-muted); font-weight: 700; }
+.bridge-card ul, .bridge-card p { font-size: 0.82em; }
+
+/* ============================================================
+   CITATIONS — clickable superscript markers + endnote slide
+   Usage in a slide:
+     ...a claim.<a class="cite" href="URL" target="_blank" rel="noopener">3</a>
+   Then one Sources section per deck (see .sources).
+   ============================================================ */
+.reveal a.cite {
+  font-size: 0.62em; font-weight: 800; line-height: 0;
+  vertical-align: super; margin-left: 0.12em; padding: 0 0.28em;
+  color: var(--tec-blue-bright); text-decoration: none;
+  border-radius: 4px; transition: background 0.12s, color 0.12s;
+}
+.reveal a.cite::before { content: "["; opacity: 0.55; }
+.reveal a.cite::after  { content: "]"; opacity: 0.55; }
+.reveal a.cite:hover {
+  background: var(--tec-blue-bright); color: #fff;
+}
+/* citations inside dark callouts (danger/warn) stay legible */
+.reveal .callout.danger a.cite, .reveal .callout.warning a.cite { color: inherit; text-decoration: underline; }
+
+/* ---- Sources / endnotes slide ---- */
+.reveal section.sources { text-align: left; }
+.reveal section.sources h2 { font-size: 1.15em; }
+.reveal .src-list {
+  list-style: none; margin: 0.3em 0 0; padding: 0;
+  columns: 2; column-gap: 2.2em; font-size: 0.5em; line-height: 1.32;
+}
+.reveal .src-list li {
+  break-inside: avoid; margin: 0 0 0.62em;
+  padding-left: 2.1em; text-indent: -2.1em;
+}
+.reveal .src-list li .n {
+  display: inline-block; min-width: 1.5em; text-indent: 0;
+  font-weight: 800; color: var(--tec-blue-bright);
+}
+.reveal .src-list a { color: var(--tec-blue); word-break: break-word; }
+.reveal .src-list .src-src { color: var(--tec-muted); }
+.reveal .sources .src-note {
+  font-size: 0.5em; color: var(--tec-muted); margin-top: 0.8em;
+  border-top: 1px solid var(--tec-line); padding-top: 0.5em;
+}
+
+/* responsive guard for very small render windows */
+@media (max-width: 900px) {
+  .reveal .cols, .reveal .cols-3, .reveal .cols-5-7 { grid-template-columns: 1fr; }
+  .reveal .src-list { columns: 1; }
+}

@@ -1,0 +1,29 @@
+# review-gate.yml — GitHub Actions step gating on schema-valid reviewer output.
+#
+# Course: Agent Operations (Copilot edition) · Session 1 · A1.4 stretch goal / Lab L1.5.
+# Install: copy to <repo>/.github/workflows/review-gate.yml. Assumes review.json is
+#          produced earlier in the job (by the embedded-reviewer under the ci-review
+#          chat mode, or uploaded as an artifact from a prior step).
+# No secrets required; the validator is dependency-free.
+
+name: review-gate
+
+on:
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Placeholder: in the lab, review.json is committed alongside the PR.
+      # In production you would generate it here via the Copilot CLI reviewer run.
+      - name: Validate findings against schema
+        run: python3 ci/validate_findings.py review.json --fail-on high

@@ -1,0 +1,140 @@
+{
+  "analysis": {
+    "tool": "MockAnalyzer (qualified-analyzer-shaped, training)",
+    "tool_version": "2026.1-mock",
+    "project": "training",
+    "build_id": "ma-build-a243",
+    "file": "../../src/can_scheduler.py",
+    "taxonomy": [
+      "BAPS",
+      "CWE"
+    ],
+    "generated": "2026-07-14T21:56:37Z"
+  },
+  "findings": [
+    {
+      "finding_id": "MA-a243-001",
+      "checker": "CONC.SHARED_UNPROTECTED",
+      "rule_ref": "BAPS-07/BAPS-02; CWE-362",
+      "severity": "critical",
+      "line": 29,
+      "function": "(module scope)",
+      "message": "Unprotected read-modify-write of 'tx_queue' shared between callback context (on_rx_frame) and task context (promote_diag, sched_reset, sched_task). Check-then-act sequences on it race.",
+      "code_excerpt": "tx_queue = []                     # written by RX callback AND scheduler task",
+      "trace": [
+        "on_rx_frame() mutates tx_queue (line 62)",
+        "promote_diag() mutates tx_queue (line 125)",
+        "sched_reset() mutates tx_queue (line 141)",
+        "sched_task() mutates tx_queue (line 107)",
+        "no lock held on either path"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-002",
+      "checker": "CONC.SHARED_UNPROTECTED",
+      "rule_ref": "BAPS-07/BAPS-02; CWE-362",
+      "severity": "critical",
+      "line": 30,
+      "function": "(module scope)",
+      "message": "Unprotected read-modify-write of 'bus_off' shared between callback context (on_bus_off) and task context (sched_reset). Check-then-act sequences on it race.",
+      "code_excerpt": "bus_off = False                   # set by the error callback, polled by task",
+      "trace": [
+        "on_bus_off() mutates bus_off (line 70)",
+        "sched_reset() mutates bus_off (line 142)",
+        "no lock held on either path"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-003",
+      "checker": "CONC.SHARED_UNPROTECTED",
+      "rule_ref": "BAPS-07/BAPS-02; CWE-362",
+      "severity": "critical",
+      "line": 31,
+      "function": "(module scope)",
+      "message": "Unprotected read-modify-write of 'stats' shared between callback context (on_rx_frame) and task context (_classify, sched_reset, sched_task). Check-then-act sequences on it race.",
+      "code_excerpt": "stats = {\"enqueued\": 0, \"sent\": 0, \"dropped\": 0}",
+      "trace": [
+        "_classify() mutates stats (line 77)",
+        "on_rx_frame() mutates stats (line 63)",
+        "sched_reset() mutates stats (line 143)",
+        "sched_task() mutates stats (line 115)",
+        "no lock held on either path"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-004",
+      "checker": "CONC.SHARED_UNPROTECTED",
+      "rule_ref": "BAPS-02; CWE-362",
+      "severity": "warning",
+      "line": 32,
+      "function": "(module scope)",
+      "message": "Module-global '_seq' is mutated after init (by on_rx_frame) without a lock; encapsulate the state or guard it.",
+      "code_excerpt": "_seq = 0",
+      "trace": [
+        "_seq = 0"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-005",
+      "checker": "ABV.TAINTED",
+      "rule_ref": "BAPS-01; CWE-20",
+      "severity": "critical",
+      "line": 59,
+      "function": "on_rx_frame",
+      "message": "struct.unpack_from reads from 'payload' in on_rx_frame() without a length check; an undersized or oversized payload raises or reads stale bytes. Validate len() before unpacking.",
+      "code_excerpt": "first_signal = struct.unpack_from(\">H\", payload, 0)[0]",
+      "trace": [
+        "payload: no len() bound check on any path before line 59"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-006",
+      "checker": "DISPATCH.NO_DEFAULT",
+      "rule_ref": "BAPS-03; CWE-478",
+      "severity": "error",
+      "line": 76,
+      "function": "_classify",
+      "message": "Dispatch over 'frame_type' in _classify() has no explicit unknown-value case; unexpected values fall through silently. Add an else that reports the fault.",
+      "code_excerpt": "if frame_type == FRAME_TYPE_APP:",
+      "trace": [
+        "3 branches, no else"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-007",
+      "checker": "EXC.SWALLOWED",
+      "rule_ref": "BAPS-05; CWE-703",
+      "severity": "error",
+      "line": 112,
+      "function": "sched_task",
+      "message": "Bare `except:` in sched_task() \u2014 safety paths must re-raise or fail closed, never continue on unknown errors.",
+      "code_excerpt": "except:                     # noqa: E722 \u2014 keep the bus pumping",
+      "trace": [
+        "except:                     # noqa: E722 \u2014 keep the bus pumping"
+      ]
+    },
+    {
+      "finding_id": "MA-a243-008",
+      "checker": "LV.UNUSED_RESULT.SUSPICIOUS",
+      "rule_ref": "BAPS (residue); CWE-561",
+      "severity": "review",
+      "line": 143,
+      "function": "sched_reset",
+      "message": "Operation marked '(?)' in source; possibly dead or unjustified \u2014 flag for the author, do not auto-fix.",
+      "code_excerpt": "stats[\"enqueued\"] = stats[\"enqueued\"] & mask   # keep debug residue (?)",
+      "trace": [
+        "stats[\"enqueued\"] = stats[\"enqueued\"] & mask   # keep debug residue (?)"
+      ]
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "mandatory": 6,
+    "by_severity": {
+      "critical": 4,
+      "error": 2,
+      "warning": 1,
+      "review": 1
+    }
+  }
+}

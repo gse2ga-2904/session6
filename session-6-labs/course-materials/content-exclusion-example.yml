@@ -1,0 +1,63 @@
+# content-exclusion-example.yml — Copilot content exclusion with its limitations
+#
+# Course:  Agent Operations for Engineering Teams — Copilot edition
+# Used by: Session 6 · Pillar 6.1 (tiered access) and Lab 6.1 (access matrix)
+# How to use: this is NOT a file you commit — paste the rules into
+#   Repository settings > Copilot > Content exclusion   (repo-level paths), or
+#   Organization settings > Copilot > Content exclusion (repo-scoped section below).
+#   Requires Copilot Business or Enterprise. Syntax: fnmatch path patterns.
+#
+# ============================ READ THIS FIRST =================================
+# Content exclusion is a COMPLETION-SURFACE control, not a security boundary.
+# Documented limitations (teach these; do not soften them):
+#
+#   1. NOT honored by: Copilot CLI, the cloud coding agent, or the Agent and
+#      Edit modes of Copilot Chat — i.e., exactly the agentic surfaces this
+#      course is about.
+#   2. Propagation delay: changes can take up to 30 MINUTES to reach clients.
+#   3. Semantic leakage: "Copilot may use semantic information from an excluded
+#      file if the information is provided by the IDE indirectly" (types,
+#      symbols, diagnostics). Exclusion is BEST-EFFORT, not a guarantee.
+#
+# Consequence for the access matrix: for Restricted-tier data, exclusion may be
+# an EXTRA layer, never the ONLY layer. The primary controls are repo access
+# permissions (don't grant the read), hooks (gate the action), and isolation
+# (bound the blast radius).
+# ==============================================================================
+
+# ---- Repository-level rules (this repo's settings page) ----------------------
+# Everything under calibration/ : ASIL-rated brake calibration parameter sets.
+# PRIMARY control = separate repo + team permission; this rule only reduces
+# accidental completion-surface exposure for users who DO have read access.
+- "calibration/**"
+
+# Key material and secret wiring. PRIMARY control = these files should not be
+# in the repo at all (use environment secrets); the guard_credentials.py hook
+# gates agent edits; this exclusion covers completions only.
+- "secrets/**"
+- "**/*.pem"
+- "**/*.key"
+
+# Homologation / type-approval evidence packages (customer-confidential).
+- "homologation/**"
+- "docs/customer/**"
+
+# ---- Organization-level rules (org settings page) ----------------------------
+# Org syntax scopes rules per repository reference:
+#
+# bosch-gdl/brake-controller:
+#   - "calibration/**"
+#   - "hil-bench/credentials/**"
+#
+# bosch-gdl/*:
+#   - "**/*.p12"
+#   - "**/customer_ip/**"
+
+# ---- Verification checklist (after saving) -----------------------------------
+# [ ] Wait up to 30 min, then open an excluded file in the IDE: completions
+#     should be suppressed and the Copilot status icon should show exclusion.
+# [ ] Now open Copilot CLI in the same repo and note that the exclusion does
+#     NOT apply there — demonstrate this to your team once; it lands better
+#     than any slide.
+# [ ] Record in the access matrix: every cell citing this file must also cite
+#     its primary (enforcing) control.

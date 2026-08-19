@@ -1,0 +1,15 @@
+# .gitattributes — line-ending policy for labs-repo.
+# Windows clones with core.autocrlf=true would otherwise convert scripts,
+# Makefiles, and JSON/JSONL fixtures to CRLF and break them under Git Bash
+# ("\r: command not found", tab-indent errors, checksum drift).
+* text=auto
+
+# Files that must stay LF on every platform:
+*.sh    text eol=lf
+Makefile text eol=lf
+*.py    text eol=lf
+*.json  text eol=lf
+*.jsonl text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf

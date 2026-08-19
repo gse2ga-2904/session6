@@ -1,0 +1,10 @@
+build/
+__pycache__/
+hook-trace.jsonl
+audit.log.jsonl
+siem.ndjson
+.DS_Store
+.pytest_cache/
+cov-html/
+.coverage
+.coverage.*

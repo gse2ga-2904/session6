@@ -1,0 +1,62 @@
+{
+  "_comment": [
+    "mcp-servers.json — MCP wiring for labs-repo (course master copy).",
+    "What:   declares the two MCP servers that ship INSIDE this repo:",
+    "        (a) bosch-canlog  — the Session 3 'corporate' FastMCP server",
+    "            (mcp/mcp_server.py): CAN-log resources + parse tools, token",
+    "            auth, audit logging;",
+    "        (b) mock-analyzer — the Session 5/7 mock static analyzer",
+    "            (mcp/mock-analyzer/server.py; course stand-in for the",
+    "            qualified analyzer).",
+    "        Both run from a repo-relative path — no install step, no network.",
+    "Used by: Session 3 (Lab 3-B wires bosch-canlog) and Session 5 (the",
+    "        remediation loop queries mock-analyzer). .vscode/mcp.json is the",
+    "        VS Code-format twin of this file and is what VS Code actually",
+    "        reads; keep the two in sync.",
+    "Adjust: paths below are relative to the repo root (${workspaceFolder}).",
+    "        If you relocate a server, update BOTH this file and",
+    "        .vscode/mcp.json. For the cloud coding agent, register the same",
+    "        servers under repo Settings > Copilot > coding agent > MCP.",
+    "Run:    requires the org policy 'MCP servers in Copilot' to be ENABLED",
+    "        (ships disabled by default — see LIVE.md).",
+    "Note:   no secrets in this file, ever. Tokens arrive via environment or",
+    "        VS Code 'inputs' prompts (secret storage) — see",
+    "        docs/secrets-setup.md. Training servers accept any placeholder.",
+    "        JSON has no comments — remove this _comment key in working copies.",
+    "Python: server commands use 'python' (not python3) so they work on Windows/Git Bash;",
+    "        on Linux/macOS 'python' must resolve to Python 3 (Ubuntu: sudo apt install python-is-python3)."
+  ],
+  "servers": {
+    "bosch-canlog": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["${workspaceFolder}/mcp/mcp_server.py"],
+      "env": {
+        "BOSCH_MCP_TOKEN": "${input:bosch-mcp-token}",
+        "AUDIT_LOG_PATH": "${workspaceFolder}/audit.log.jsonl"
+      }
+    },
+    "mock-analyzer": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["${workspaceFolder}/mcp/mock-analyzer/server.py"],
+      "env": {
+        "ANALYZER_TOKEN": "${input:analyzer-token}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "bosch-mcp-token",
+      "type": "promptString",
+      "password": true,
+      "description": "Bosch MCP service token (training: any placeholder, see docs/secrets-setup.md)"
+    },
+    {
+      "id": "analyzer-token",
+      "type": "promptString",
+      "password": true,
+      "description": "Mock analyzer service token (training: any placeholder — never commit a real secret)"
+    }
+  ]
+}

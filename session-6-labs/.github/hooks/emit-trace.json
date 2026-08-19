@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "_comment": [
+    "emit-trace.json — Copilot agent hook: emit one trace event per lifecycle firing.",
+    "Course: Agent Operations (Copilot edition) · Session 2 · Activity A2.3 / Lab L2.5.",
+    "FORMAT (facts as of Jul 2026): Copilot CLI requires top-level \"version\": 1 and",
+    "FLAT command entries — without version:1 the CLI silently skips the file.",
+    "Configs are loaded when the CLI STARTS (restart the session after edits) and",
+    "only from the repo you launch it in. Matcher enforcement is surface-dependent",
+    "(CLI honors it since v1.0.63; VS Code parses but ignores it) — the matcher",
+    "carries both Claude-style and runtime tool names, and the script ALSO filters",
+    "by tool name itself: the only filter that behaves the same on every surface.",
+    "Commands use python3 (macOS has no `python`); `windows` overrides with python.",
+    "Payload casing differs per harness; the scripts accept both. JSON has no",
+    "comments, hence this _comment block (loaders tolerate unknown keys)."
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "PostToolUse": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "PreCompact": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "SubagentStart": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "SubagentStop": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ],
+    "Stop": [
+      {
+        "type": "command",
+        "command": "python3 .github/hooks/scripts/emit_trace.py",
+        "windows": "python .github/hooks/scripts/emit_trace.py",
+        "timeout": 3,
+        "timeoutSec": 3
+      }
+    ]
+  }
+}

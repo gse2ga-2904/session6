@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "_comment": [
+    "block-destructive.json — Copilot agent hook: destructive-command blocker (PreToolUse).",
+    "Course: Agent Operations (Copilot edition) · Session 1 · Activity A1.2 and Lab L1.5.",
+    "FORMAT (facts as of Jul 2026): Copilot CLI requires top-level \"version\": 1 and",
+    "FLAT command entries — without version:1 the CLI silently skips the file.",
+    "Configs are loaded when the CLI STARTS (restart the session after edits) and",
+    "only from the repo you launch it in. Matcher enforcement is surface-dependent",
+    "(CLI honors it since v1.0.63; VS Code parses but ignores it) — the matcher",
+    "carries both Claude-style and runtime tool names, and the script ALSO filters",
+    "by tool name itself: the only filter that behaves the same on every surface.",
+    "Commands use python3 (macOS has no `python`); `windows` overrides with python.",
+    "Payload casing differs per harness; the scripts accept both. JSON has no",
+    "comments, hence this _comment block (loaders tolerate unknown keys)."
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "matcher": "Bash|bash|shell|powershell|runTerminalCommand",
+        "command": "python3 .github/hooks/scripts/block_destructive.py",
+        "windows": "python .github/hooks/scripts/block_destructive.py",
+        "timeout": 5,
+        "timeoutSec": 5
+      }
+    ]
+  }
+}

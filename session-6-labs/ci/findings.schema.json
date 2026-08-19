@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.bosch-sandbox/findings.schema.json",
+  "title": "Review findings contract",
+  "description": "findings.schema.json - the output contract for the embedded-reviewer under the ci-review chat mode. Course: Agent Operations (Copilot edition), Session 1, Activity A1.4 / Lab L1.5. Validated in CI by ci/validate_findings.py.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["severity", "rule", "line", "msg"],
+    "additionalProperties": false,
+    "properties": {
+      "severity": { "type": "string", "enum": ["high", "med", "low"] },
+      "rule": { "type": "string", "minLength": 1, "maxLength": 32 },
+      "line": { "type": "integer", "minimum": 1 },
+      "msg": { "type": "string", "minLength": 1, "maxLength": 500 }
+    }
+  }
+}

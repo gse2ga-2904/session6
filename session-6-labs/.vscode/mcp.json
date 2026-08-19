@@ -1,0 +1,57 @@
+{
+  "_comment": [
+    ".vscode/mcp.json — VS Code MCP configuration for labs-repo.",
+    "What:   wires (a) the built-in GitHub MCP server, (b) the bosch-canlog",
+    "        server, and (c) the mock-analyzer into Copilot agent mode. Both",
+    "        local servers live IN THIS REPO under mcp/ — see",
+    "        mcp/mcp-servers.json (the harness-neutral master copy; keep the",
+    "        two files in sync).",
+    "Used by: Session 3 · Activity 3-A (github block) and Lab 3-B",
+    "        (bosch-canlog); Session 5 remediation labs (mock-analyzer).",
+    "Run:    VS Code discovers .vscode/mcp.json automatically (MCP is GA in",
+    "        VS Code since Jul 2025). Requires the org policy 'MCP servers in",
+    "        Copilot' to be ENABLED — it is disabled by default.",
+    "Note:   no secrets in this file, ever. Secrets arrive via 'inputs' prompts",
+    "        (stored in secret storage) or environment variables. JSON has no",
+    "        comments — remove this _comment key in your working copy.",
+    "Python: server commands use 'python' (not python3) so they work on Windows/Git Bash;",
+    "        on Linux/macOS 'python' must resolve to Python 3 (Ubuntu: sudo apt install python-is-python3)."
+  ],
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/"
+    },
+    "bosch-canlog": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["${workspaceFolder}/mcp/mcp_server.py"],
+      "env": {
+        "BOSCH_MCP_TOKEN": "${input:bosch-mcp-token}",
+        "AUDIT_LOG_PATH": "${workspaceFolder}/audit.log.jsonl"
+      }
+    },
+    "mock-analyzer": {
+      "type": "stdio",
+      "command": "python",
+      "args": ["${workspaceFolder}/mcp/mock-analyzer/server.py"],
+      "env": {
+        "ANALYZER_TOKEN": "${input:analyzer-token}"
+      }
+    }
+  },
+  "inputs": [
+    {
+      "id": "bosch-mcp-token",
+      "type": "promptString",
+      "password": true,
+      "description": "Bosch MCP service token (training: any placeholder, see secrets-setup.md)"
+    },
+    {
+      "id": "analyzer-token",
+      "type": "promptString",
+      "password": true,
+      "description": "Mock analyzer service token (training: any placeholder — never commit a real secret)"
+    }
+  ]
+}

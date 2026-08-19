@@ -1,0 +1,125 @@
+# =============================================================================
+# agent-compliance-check.yml — MCP-backed compliance check for agent PRs
+#
+# What:     GitHub Actions workflow that runs on every pull request (including
+#           draft PRs opened by the Copilot coding agent). It:
+#             1. runs the MCP server self-test (proves the tool layer is sane)
+#             2. runs the BAPS-subset scan over changed Python sources
+#             3. posts the findings as a PR comment
+#             4. fails the check if any mandatory-rule violation is found
+#
+# Used by:  Session 3 · Lab 3-C (end-to-end pipeline: issue -> coding agent ->
+#           draft PR -> this check -> review comments). The BAPS scanner is
+#           the same script packaged as a skill in Session 4
+#           (.github/skills/bosch-embedded-std-checker/scripts/check_standard.py).
+#
+# Setup:    - copy to .github/workflows/ in the training repo
+#           - repo secret BOSCH_MCP_TOKEN (placeholder value is fine in training)
+#           - the compliance scripts committed under session-3/code/ and
+#             session-4/code/ (paths below)
+#
+# Cost note: runs on GitHub Actions -> consumes Actions minutes, like every
+#           coding-agent session. Budget accordingly (Session 6, FinOps).
+# =============================================================================
+
+name: Agent compliance check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write   # required to post the findings comment
+
+jobs:
+  compliance:
+    name: MCP-backed BAPS compliance
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install fastmcp
+
+      # 1) Prove the MCP tool layer works before trusting its output.
+      - name: MCP server self-test
+        env:
+          BOSCH_MCP_TOKEN: ${{ secrets.BOSCH_MCP_TOKEN }}
+          AUDIT_LOG_PATH: ${{ runner.temp }}/audit.log.jsonl
+        run: python mcp/mcp_server.py --selftest
+
+      # 2) Scan the Python sources changed in this PR against the BAPS subset.
+      - name: Run BAPS-subset scan on changed files
+        id: scan
+        run: |
+          BASE="${{ github.event.pull_request.base.sha }}"
+          HEAD="${{ github.event.pull_request.head.sha }}"
+          CHANGED=$(git diff --name-only "$BASE" "$HEAD" -- '*.py' || true)
+          echo "Changed Python sources:"; echo "$CHANGED"
+          if [ -z "$CHANGED" ]; then
+            echo "report=No Python sources changed — compliance check not applicable." >> "$GITHUB_OUTPUT"
+            echo "violations=0" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          # shellcheck disable=SC2086
+          python .github/skills/bosch-embedded-std-checker/scripts/check_standard.py \
+            --format markdown --output baps-report.md $CHANGED || true
+          VIOLATIONS=$(python .github/skills/bosch-embedded-std-checker/scripts/check_standard.py \
+            --format count $CHANGED)
+          echo "violations=$VIOLATIONS" >> "$GITHUB_OUTPUT"
+
+      # 3) Post the findings on the PR (idempotent: updates its own comment).
+      - name: Post findings as PR comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const marker = '<!-- bosch-compliance-check -->';
+            let body;
+            try {
+              body = marker + '\n## 🤖 Bosch compliance check (MCP-backed)\n\n'
+                   + fs.readFileSync('baps-report.md', 'utf8')
+                   + '\n\n> Source of truth: the qualified analyzer (course '
+                   + 'mock; at Bosch: Klocwork/Coverity). This check is the '
+                   + 'training-grade BAPS subset — see '
+                   + 'references/baps-rules-subset.md.';
+            } catch {
+              body = marker + '\n## 🤖 Bosch compliance check (MCP-backed)\n\n'
+                   + '${{ steps.scan.outputs.report }}';
+            }
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner, repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            const mine = comments.find(c => c.body.includes(marker));
+            if (mine) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                comment_id: mine.id, body,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner, repo: context.repo.repo,
+                issue_number: context.issue.number, body,
+              });
+            }
+
+      # 4) Red status when mandatory rules are violated -> branch protection
+      #    keeps the agent's PR in draft until the check is green.
+      - name: Enforce mandatory rules
+        run: |
+          V="${{ steps.scan.outputs.violations }}"
+          echo "Mandatory-rule violations: $V"
+          if [ "${V:-0}" -gt 0 ]; then
+            echo "::error::Compliance check failed — $V mandatory BAPS-subset violation(s)."
+            exit 1
+          fi

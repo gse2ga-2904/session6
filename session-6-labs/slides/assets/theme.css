@@ -1,0 +1,210 @@
+/* ============================================================================
+   Agent Operations for Engineering Teams — Tec de Monterrey × Bosch
+   Shared reveal.js THEME  ·  Tec de Monterrey blue
+   Loaded by every session deck (after reveal/dist/reveal.css).
+   Edit this file once; all decks update.
+   ========================================================================== */
+
+:root {
+  /* --- Brand palette (Tec de Monterrey) --- */
+  --tec-blue:        #003DA5;   /* primary institutional blue */
+  --tec-blue-bright: #1E6FE0;   /* links / interactive accents */
+  --tec-blue-soft:   #E7EEFB;   /* tinted backgrounds */
+  --tec-ink:         #16223B;   /* main text (deep navy) */
+  --tec-muted:       #5A6B85;   /* secondary text */
+  --tec-line:        #D7E0EE;   /* hairlines / borders */
+  --tec-bg:          #FFFFFF;   /* slide background */
+  --tec-bg-alt:      #F4F7FC;   /* card / panel background */
+
+  /* --- Functional colors --- */
+  --c-hook:    #E8730C;   /* andragogy: ENGAGE   (amber) */
+  --c-theory:  #003DA5;   /* andragogy: THEORY   (blue)  */
+  --c-activity:#1E8E5A;   /* andragogy: ACTIVITY (green) */
+  --c-lab:     #6A4BC2;   /* andragogy: LAB      (purple)*/
+  --c-danger:  #D12B2B;   /* blocked / destructive */
+  --c-warn:    #B8860B;   /* caution */
+  --c-ok:      #1E8E5A;   /* pass / success */
+
+  /* --- Code surface (kept dark for IDE-like contrast) --- */
+  --code-bg:   #0E1B2E;
+  --code-fg:   #E6EDF6;
+  --code-line: #24344B;
+
+  /* --- Type --- */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", "Cascadia Code", Menlo, Consolas, "Liberation Mono", monospace;
+
+  --radius: 14px;
+  --shadow: 0 8px 28px rgba(16, 34, 59, 0.12);
+}
+
+/* ---------- Base reveal surface ---------- */
+.reveal-viewport { background: var(--tec-bg); }
+
+.reveal {
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 400;
+  color: var(--tec-ink);
+}
+
+.reveal .slides {
+  text-align: left;
+}
+
+.reveal .slides section {
+  height: 100%;
+}
+
+/* ---------- Headings ---------- */
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+  font-family: var(--font-sans);
+  color: var(--tec-ink);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-transform: none;
+  margin: 0 0 0.5em 0;
+}
+.reveal h1 { font-size: 2.0em; }
+.reveal h2 { font-size: 1.35em; }
+.reveal h3 { font-size: 1.05em; color: var(--tec-blue); }
+.reveal h4 { font-size: 0.85em; color: var(--tec-muted); font-weight: 700; }
+
+.reveal h2 .lead-rule,
+.reveal h3 .lead-rule { display: block; height: 5px; width: 64px; background: var(--tec-blue); border-radius: 3px; margin-bottom: 0.35em; }
+
+/* ---------- Text elements ---------- */
+.reveal p { line-height: 1.4; }
+.reveal a { color: var(--tec-blue-bright); text-decoration: none; border-bottom: 1px solid rgba(30,111,224,0.35); }
+.reveal strong { color: var(--tec-blue); font-weight: 700; }
+.reveal em { color: var(--tec-ink); }
+.reveal small { color: var(--tec-muted); }
+
+.reveal ul, .reveal ol { display: block; margin-left: 1em; }
+.reveal li { line-height: 1.4; margin-bottom: 0.35em; }
+.reveal li::marker { color: var(--tec-blue); }
+
+/* tighter, denser lists when needed */
+.reveal .tight li { margin-bottom: 0.15em; font-size: 0.92em; }
+
+/* ---------- Slide header band (per-section context) ---------- */
+.reveal .slide-kicker {
+  display: inline-block;
+  font-size: 0.5em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--tec-blue);
+  background: var(--tec-blue-soft);
+  padding: 0.35em 0.8em;
+  border-radius: 999px;
+  margin-bottom: 0.6em;
+}
+
+/* ---------- Title (cover) slide ---------- */
+.reveal section.cover { text-align: left; }
+.reveal section.cover .cover-inner {
+  position: absolute; top: 50%; left: 0; right: 6%;
+  transform: translateY(-50%);
+  padding-left: 40px;
+  border-left: 8px solid var(--tec-blue);
+}
+.reveal section.cover .eyebrow {
+  color: var(--tec-blue);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-size: 0.5em;
+}
+.reveal section.cover h1 {
+  font-size: 2.2em;
+  margin-top: 0.2em;
+}
+.reveal section.cover .subtitle {
+  color: var(--tec-muted);
+  font-size: 0.8em;
+  font-weight: 500;
+  margin-top: 0.3em;
+}
+/* brand accent is now the border-left of .cover-inner, so it always
+   matches the height of the (vertically centered) title block */
+.reveal section.cover .meta-row {
+  display: flex; gap: 2em; margin-top: 1.2em;
+  font-size: 0.6em; color: var(--tec-muted);
+}
+.reveal section.cover .meta-row b { color: var(--tec-ink); display: block; font-size: 1.05em; }
+/* end-of-session survey reminder on the closing cover */
+.reveal section.cover .survey-note {
+  margin-top: 1.1em;
+  font-size: 0.62em;
+  font-weight: 700;
+  color: var(--tec-blue);
+}
+
+/* ---------- Tec de Monterrey logo (title + footer) ---------- */
+/* Cover: full-size logo above the eyebrow */
+.reveal section.cover .cover-logo {
+  display: block;
+  width: 320px; max-width: 42%;
+  height: auto;
+  margin: 0 0 0.9em 0;
+}
+/* All other slides: small fixed logo, bottom-right of the viewport.
+   Fixed to the viewport (not the scaled slide) so it renders at a
+   constant, predictable size on any projector resolution. */
+.reveal-viewport::after {
+  content: "";
+  position: fixed;
+  /* offset left of reveal's navigation arrows (bottom-right corner) */
+  right: 156px; bottom: 12px;
+  width: 132px; height: 41px;            /* logo aspect ≈ 3.23:1 */
+  background: url("logo/tec-azul.png") no-repeat right bottom / contain;
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: 30;
+}
+/* Hide the footer logo while the cover (which carries the big logo) is shown */
+.reveal-viewport:has(section.cover.present)::after { display: none; }
+
+/* ---------- Footer / progress / controls ---------- */
+.reveal .footer {
+  position: fixed; bottom: 14px; left: 22px;
+  font-size: 13px; color: var(--tec-muted);
+  z-index: 30; font-family: var(--font-sans);
+}
+.reveal .footer b { color: var(--tec-blue); }
+.reveal .slide-number { background: transparent; color: var(--tec-muted); font-size: 14px; }
+.reveal .progress { color: var(--tec-blue); height: 5px; }
+.reveal .controls { color: var(--tec-blue); }
+
+/* ---------- Section divider slides ---------- */
+.reveal section.divider {
+  background: linear-gradient(135deg, var(--tec-blue) 0%, #002a73 100%);
+}
+.reveal section.divider * { color: #fff !important; }
+.reveal section.divider h2 { font-size: 1.8em; }
+.reveal section.divider .slide-kicker { background: rgba(255,255,255,0.16); color: #fff; }
+.reveal section.divider .lead-rule { background: #fff; }
+.reveal section.divider .num { font-size: 4em; font-weight: 800; opacity: 0.25; line-height: 1; }
+
+/* ---------- Tables ---------- */
+.reveal table { font-size: 0.7em; border-collapse: collapse; width: 100%; }
+.reveal table th {
+  background: var(--tec-blue); color: #fff; font-weight: 700;
+  text-align: left; padding: 0.5em 0.7em; border: none;
+}
+.reveal table td { padding: 0.45em 0.7em; border-bottom: 1px solid var(--tec-line); }
+.reveal table tr:nth-child(even) td { background: var(--tec-bg-alt); }
+
+/* ---------- Utility layout ---------- */
+.reveal .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: start; }
+.reveal .cols-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1em; align-items: start; }
+.reveal .cols-5-7 { display: grid; grid-template-columns: 5fr 7fr; gap: 1.2em; align-items: center; }
+.reveal .center { text-align: center; }
+.reveal .muted { color: var(--tec-muted); }
+.reveal .big-number { font-size: 2.4em; font-weight: 800; color: var(--tec-blue); line-height: 1; }
+.reveal .fill { width: 100%; }
+
+/* fragments keep brand color on highlight */
+.reveal .fragment.highlight-current-blue.current-fragment { color: var(--tec-blue-bright); }
